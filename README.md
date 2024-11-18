@@ -7,7 +7,9 @@
 
 ## Descrição
 Implementação em Java do Chrome Offline T-Rex Game. 
-Alterações e análise da aplicação feitas por Livia Noer e Sophia Ziyade.
+Alterações e análise da aplicação: Livia Noer e Sophia Ziyade.
+## Diagrama 
+Diagrama contruido 
 
 ## Características
   - Dynamic Background
