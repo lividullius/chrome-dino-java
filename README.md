@@ -5,10 +5,11 @@
 
 ![in-game-screenshot-3](screenshots/screenshot-3.png)
 
-## Description
-A Java version of Chrome Offline T-Rex Game. Some features not affecting gameplay is missing _(will be added soon!)_. Game is running on smooth **100 fps**.
+## Descrição
+Implementação em Java do Chrome Offline T-Rex Game. 
+Alterações e análise da aplicação feitas por Livia Noer e Sophia Ziyade.
 
-## Features
+## Características
   - Dynamic Background
   - Infinite Gameplay
   - Progressive Difficulty
@@ -22,16 +23,10 @@ A Java version of Chrome Offline T-Rex Game. Some features not affecting gamepla
   - Intro
   - **MORE SOON**
 
-## Keybinds
+## Comandos
 **Jump: `ARROW UP`, `SPACE`, `W`** <br/>
 **Duck: `ARROW DOWN`, `S`** <br/>
 **Debug: <code>\`(backtick)</code>** <br/>
 **Pause: `ESC`, `P`**
 
-## Additional Information
-Possible creation of ".jar" file. Highest Scores will be stored in ".txt" file right next to ".jar" file
 
-### Debug
-  - Disables collisions
-  - Shows hitboxes of Dino, Cactuses, Birds
-  - Shows speed ( difficulty increase )
