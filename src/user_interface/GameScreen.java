@@ -56,6 +56,7 @@ public class GameScreen extends JPanel implements Runnable {
 	public GameScreen() {
 		thread = new Thread(this);
 		controls = new Controls(this);
+		//adiciona controles do jogador
 		super.add(controls.pressUp);
 		super.add(controls.releaseUp);
 		super.add(controls.pressDown);
@@ -64,6 +65,7 @@ public class GameScreen extends JPanel implements Runnable {
 //		super.add(controls.releaseDebug);
 		super.add(controls.pressPause);
 //		super.add(controls.releaseP);
+		//inicializa objetos e gerenciadores
 		cManager = new ControlsManager(controls, this);
 		score = new Score(this);
 		dino = new Dino(controls);
@@ -81,6 +83,7 @@ public class GameScreen extends JPanel implements Runnable {
 	@Override
 	public void run() {
 		long prevFrameTime = System.nanoTime();
+		//calcula o tempo restante para o proximo frame
 		int waitingTime = 0;
 		while(true) {
 			cManager.update();
@@ -128,7 +131,7 @@ public class GameScreen extends JPanel implements Runnable {
 			}
 			break;
 		case GAME_STATE_IN_PROGRESS:
-			speedX += DIFFICULTY_INC;
+			speedX += DIFFICULTY_INC;//incrementa a dificuldade
 			dino.updatePosition();
 			land.updatePosition();
 			clouds.updatePosition();
