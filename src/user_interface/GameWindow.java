@@ -29,7 +29,7 @@ public class GameWindow extends JFrame {
 	}
 	
 	public static void main(String[] args) {
-		GameWindow gameWindow = new GameWindow();
+		GameWindow gameWindow = new GameWindow();//inicializa o componente principal do jogo
 		gameWindow.startGame();
 		gameWindow.setVisible(true);
 	}
