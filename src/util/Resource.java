@@ -15,7 +15,7 @@ public class Resource {
 		File file = new File(path);
 		BufferedImage image = null;
 		try {
-			// ClassLoader here is because i just made jar file of this game so i can access all sprites
+			
 			if(file.exists())
 				image = ImageIO.read(file);
 			else {
