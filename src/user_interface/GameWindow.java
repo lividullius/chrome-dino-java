@@ -9,7 +9,8 @@ public class GameWindow extends JFrame {
 	public static final int SCREEN_HEIGHT = 300;
 
 	private GameScreen gameScreen;
-	
+
+	//configuração da janela principal
 	public GameWindow() {
 		super("Dino");
 		setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -17,7 +18,8 @@ public class GameWindow extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setUndecorated(true);
 		setLocationRelativeTo(null);
-		
+
+		//criação do GameScreen
 		gameScreen = new GameScreen();
 		add(gameScreen);
 	}
