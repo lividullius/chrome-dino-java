@@ -43,7 +43,6 @@ public class GameScreen extends JPanel implements Runnable {
 	private boolean introJump = true;
 	private boolean showHitboxes = false;
 	private boolean collisions = true;
-	private boolean nightMode = false;// Indica se o modo noturno está ativado
 	
 	private Controls controls;
 	private Score score;
@@ -79,17 +78,6 @@ public class GameScreen extends JPanel implements Runnable {
 		gameOverSound.startThread();
 	}
     
-    controls.pressNightMode = new AbstractAction() {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        toggleNightMode(); // Alterna o modo noturno
-        }
-    }
-super.add(controls.pressNightMode);
-	
-	public void startThread() {
-		thread.start();
-	}
 
 	
 	@Override
@@ -170,13 +158,8 @@ super.add(controls.pressNightMode);
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		// Define a cor de fundo com base no estado do modo noturno
-   		 if (nightMode) {
-     		   g.setColor(new Color(20, 20, 20)); // Cor de fundo escura
-  		  } else {
-      		   g.setColor(new Color(246, 246, 246)); // Cor de fundo clara
-   		 }
-   		   g.fillRect(0, 0, getWidth(), getHeight());
+		g.setColor(new Color(246, 246, 246));
+		g.fillRect(0, 0, getWidth(), getHeight());
 		switch (gameState) {
 		case GAME_STATE_START:
 			startScreen(g);
@@ -198,24 +181,6 @@ super.add(controls.pressNightMode);
 		}
 	}
 
-
-
-private void updateGamePhase(GamePhase phase) {
-    switch (phase) {
-        case PHASE_1:
-            land.setTheme("desert");
-            clouds.setFrequency(5);
-            break;
-        case PHASE_2:
-            land.setTheme("forest");
-            clouds.setFrequency(8);
-            break;
-        case PHASE_3:
-            land.setTheme("night");
-            clouds.setFrequency(10);
-            break;
-    }
-}
 
 	private void drawDebugMenu(Graphics g) {
 		g.setColor(Color.RED);
