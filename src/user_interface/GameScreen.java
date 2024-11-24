@@ -52,6 +52,8 @@ public class GameScreen extends JPanel implements Runnable {
 	private EnemyManager eManager;
 	private SoundManager gameOverSound;
 	private ControlsManager cManager;;
+
+	private GamePhase currentPhase = GamePhase.PHASE_1; //atributo para rastrear a fase atual
 	
 	public GameScreen() {
 		thread = new Thread(this);
