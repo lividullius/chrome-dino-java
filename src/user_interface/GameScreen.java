@@ -237,6 +237,58 @@ public class GameScreen extends JPanel implements Runnable {
 		}
 	}
 
+//@Override
+//public void paintComponent(Graphics g) {??????
+    super.paintComponent(g);
+
+    // Define a cor de fundo e preenche o background
+    g.setColor(new Color(246, 246, 246));
+    g.fillRect(0, 0, getWidth(), getHeight());
+
+    // Escolhe a imagem de fundo com base na fase atual
+    BufferedImage backgroundImage = null;
+    switch (currentPhase) {
+        case PHASE_1:
+            backgroundImage = getImage("resources/desert-bg.png");
+            break;
+        case PHASE_2:
+            backgroundImage = getImage("resources/forest-bg.png");
+            break;
+        case PHASE_3:
+            backgroundImage = getImage("resources/night-bg.png");
+            break;
+        default:
+            backgroundImage = getImage("resources/default-bg.png");
+            break;
+    }
+
+    // Desenha a imagem de fundo, se disponível
+    if (backgroundImage != null) {
+        g.drawImage(backgroundImage, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, null);
+    }
+
+    // Renderiza os elementos do jogo com base no estado atual
+    switch (gameState) {
+        case GAME_STATE_START:
+            startScreen(g);
+            break;
+        case GAME_STATE_INTRO:
+            introScreen(g);
+            break;
+        case GAME_STATE_IN_PROGRESS:
+            inProgressScreen(g);
+            break;
+        case GAME_STATE_OVER:
+            gameOverScreen(g);
+            break;
+        case GAME_STATE_PAUSED:
+            pausedScreen(g);
+            break;
+        default:
+            break;
+    }
+}//???????
+
 
 private void updateGamePhase(GamePhase phase) {
     switch (phase) {
