@@ -43,6 +43,7 @@ public class GameScreen extends JPanel implements Runnable {
 	private boolean introJump = true;
 	private boolean showHitboxes = false;
 	private boolean collisions = true;
+	private boolean nightMode = false;// Indica se o modo noturno está ativado
 	
 	private Controls controls;
 	private Score score;
@@ -53,7 +54,7 @@ public class GameScreen extends JPanel implements Runnable {
 	private SoundManager gameOverSound;
 	private ControlsManager cManager;;
 
-	private GamePhase currentPhase = GamePhase.PHASE_1; //atributo para rastrear a fase atual
+	
 	
 	public GameScreen() {
 		thread = new Thread(this);
@@ -77,10 +78,19 @@ public class GameScreen extends JPanel implements Runnable {
 		gameOverSound = new SoundManager("resources/dead.wav");
 		gameOverSound.startThread();
 	}
+    
+    controls.pressNightMode = new AbstractAction() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        toggleNightMode(); // Alterna o modo noturno
+        }
+    }
+super.add(controls.pressNightMode);
 	
 	public void startThread() {
 		thread.start();
 	}
+
 	
 	@Override
 	public void run() {
@@ -115,6 +125,7 @@ public class GameScreen extends JPanel implements Runnable {
 		return gameState;
 	}
 
+	
 	// update all entities positions
 	private void updateFrame() {
 		switch (gameState) {
@@ -150,72 +161,22 @@ public class GameScreen extends JPanel implements Runnable {
 			break;
 		}
 	}
-
-	// private void updateFrame() { ??????????????????
-    switch (gameState) {
-        case GAME_STATE_INTRO:
-            // Atualização da fase de introdução
-            dino.updatePosition();
-            if (!introJump && dino.getDinoState() == DinoState.DINO_RUN) {
-                land.updatePosition();
-            }
-            clouds.updatePosition();
-            introCountdown += speedX;
-            if (introCountdown <= 0) {
-                gameState = GameState.GAME_STATE_IN_PROGRESS;
-            }
-            if (introJump) {
-                dino.jump();
-                dino.setDinoState(DinoState.DINO_JUMP);
-                introJump = false;
-            }
-            break;
-
-        case GAME_STATE_IN_PROGRESS:
-            // Incremento da dificuldade
-            speedX += DIFFICULTY_INC;
-            dino.updatePosition();
-            land.updatePosition();
-            clouds.updatePosition();
-            eManager.updatePosition();
-
-            // Verifica e altera a fase do jogo com base na pontuação
-            if (score.getScore() > 2000) {
-                currentPhase = GamePhase.PHASE_3;
-            } else if (score.getScore() > 1000) {
-                currentPhase = GamePhase.PHASE_2;
-            } else {
-                currentPhase = GamePhase.PHASE_1;
-            }
-
-            // Atualiza o cenário com base na fase atual
-            updateGamePhase(currentPhase);
-
-            // Verifica colisões e finaliza o jogo, se necessário
-            if (collisions && eManager.isCollision(dino.getHitbox())) {
-                gameState = GameState.GAME_STATE_OVER;
-                dino.dinoGameOver();
-                score.writeScore();
-                gameOverSound.play();
-            }
-
-            // Atualiza a pontuação
-            score.scoreUp();
-            break;
-
-        default:
-            break;
-    }
-}//???????????????????
-
 	
-
+    public void toggleNightMode() {
+    	nightMode = !nightMode; // Alterna entre ativado/desativado
+	    repaint();
+	}
 	
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.setColor(new Color(246, 246, 246));
-		g.fillRect(0, 0, getWidth(), getHeight());
+		// Define a cor de fundo com base no estado do modo noturno
+   		 if (nightMode) {
+     		   g.setColor(new Color(20, 20, 20)); // Cor de fundo escura
+  		  } else {
+      		   g.setColor(new Color(246, 246, 246)); // Cor de fundo clara
+   		 }
+   		   g.fillRect(0, 0, getWidth(), getHeight());
 		switch (gameState) {
 		case GAME_STATE_START:
 			startScreen(g);
@@ -237,57 +198,6 @@ public class GameScreen extends JPanel implements Runnable {
 		}
 	}
 
-//@Override
-//public void paintComponent(Graphics g) {??????
-    super.paintComponent(g);
-
-    // Define a cor de fundo e preenche o background
-    g.setColor(new Color(246, 246, 246));
-    g.fillRect(0, 0, getWidth(), getHeight());
-
-    // Escolhe a imagem de fundo com base na fase atual
-    BufferedImage backgroundImage = null;
-    switch (currentPhase) {
-        case PHASE_1:
-            backgroundImage = getImage("resources/desert-bg.png");
-            break;
-        case PHASE_2:
-            backgroundImage = getImage("resources/forest-bg.png");
-            break;
-        case PHASE_3:
-            backgroundImage = getImage("resources/night-bg.png");
-            break;
-        default:
-            backgroundImage = getImage("resources/default-bg.png");
-            break;
-    }
-
-    // Desenha a imagem de fundo, se disponível
-    if (backgroundImage != null) {
-        g.drawImage(backgroundImage, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, null);
-    }
-
-    // Renderiza os elementos do jogo com base no estado atual
-    switch (gameState) {
-        case GAME_STATE_START:
-            startScreen(g);
-            break;
-        case GAME_STATE_INTRO:
-            introScreen(g);
-            break;
-        case GAME_STATE_IN_PROGRESS:
-            inProgressScreen(g);
-            break;
-        case GAME_STATE_OVER:
-            gameOverScreen(g);
-            break;
-        case GAME_STATE_PAUSED:
-            pausedScreen(g);
-            break;
-        default:
-            break;
-    }
-}//???????
 
 
 private void updateGamePhase(GamePhase phase) {
