@@ -150,6 +150,66 @@ public class GameScreen extends JPanel implements Runnable {
 			break;
 		}
 	}
+
+	// private void updateFrame() { ??????????????????
+    switch (gameState) {
+        case GAME_STATE_INTRO:
+            // Atualização da fase de introdução
+            dino.updatePosition();
+            if (!introJump && dino.getDinoState() == DinoState.DINO_RUN) {
+                land.updatePosition();
+            }
+            clouds.updatePosition();
+            introCountdown += speedX;
+            if (introCountdown <= 0) {
+                gameState = GameState.GAME_STATE_IN_PROGRESS;
+            }
+            if (introJump) {
+                dino.jump();
+                dino.setDinoState(DinoState.DINO_JUMP);
+                introJump = false;
+            }
+            break;
+
+        case GAME_STATE_IN_PROGRESS:
+            // Incremento da dificuldade
+            speedX += DIFFICULTY_INC;
+            dino.updatePosition();
+            land.updatePosition();
+            clouds.updatePosition();
+            eManager.updatePosition();
+
+            // Verifica e altera a fase do jogo com base na pontuação
+            if (score.getScore() > 2000) {
+                currentPhase = GamePhase.PHASE_3;
+            } else if (score.getScore() > 1000) {
+                currentPhase = GamePhase.PHASE_2;
+            } else {
+                currentPhase = GamePhase.PHASE_1;
+            }
+
+            // Atualiza o cenário com base na fase atual
+            updateGamePhase(currentPhase);
+
+            // Verifica colisões e finaliza o jogo, se necessário
+            if (collisions && eManager.isCollision(dino.getHitbox())) {
+                gameState = GameState.GAME_STATE_OVER;
+                dino.dinoGameOver();
+                score.writeScore();
+                gameOverSound.play();
+            }
+
+            // Atualiza a pontuação
+            score.scoreUp();
+            break;
+
+        default:
+            break;
+    }
+}//???????????????????
+
+	
+
 	
 	@Override
 	public void paintComponent(Graphics g) {
@@ -176,7 +236,25 @@ public class GameScreen extends JPanel implements Runnable {
 			break;
 		}
 	}
-	
+
+
+private void updateGamePhase(GamePhase phase) {
+    switch (phase) {
+        case PHASE_1:
+            land.setTheme("desert");
+            clouds.setFrequency(5);
+            break;
+        case PHASE_2:
+            land.setTheme("forest");
+            clouds.setFrequency(8);
+            break;
+        case PHASE_3:
+            land.setTheme("night");
+            clouds.setFrequency(10);
+            break;
+    }
+}
+
 	private void drawDebugMenu(Graphics g) {
 		g.setColor(Color.RED);
 		g.drawLine(0, GROUND_Y, getWidth(), GROUND_Y);
